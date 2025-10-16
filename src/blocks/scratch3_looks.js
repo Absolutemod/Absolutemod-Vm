@@ -369,7 +369,9 @@ class Scratch3LooksBlocks {
             looks_setsizeto: this.setSize,
             looks_changestretchby: () => {},
             looks_setstretchto: this.stretchSet,
+            looks_changeStretch: this.changeStretch,
             looks_gotofrontback: this.goToFrontBack,
+            looks_goTargetLayer: this.goTargetLayer,
             looks_goforwardbackwardlayers: this.goForwardBackwardLayers,
             looks_layersSetLayer: this.setSpriteLayer,
             looks_layersGetLayer: this.getSpriteLayer,
@@ -386,6 +388,7 @@ class Scratch3LooksBlocks {
             looks_changeVisibilityOfSpriteHide: this.hideSprite,
             looks_stoptalking: this.stopTalking,
             looks_getinputofcostume: this.getCostumeValue,
+            looks_costumes: this.getCostumes
         };
     }
 
@@ -438,6 +441,13 @@ class Scratch3LooksBlocks {
 
     stretchSet (args, util) {
         util.target.setStretch(args.X, args.Y);
+    }
+
+    changeStretch(args, util) {
+        let [x, y] = util.target._getRenderedDirectionAndScale().stretch;
+        let new_x = x + Cast.toNumber(args.X);
+        let new_y = y + Cast.toNumber(args.Y);
+        util.target.setStretch(new_x, new_y);
     }
 
     setFont (args, util) {
@@ -867,6 +877,21 @@ class Scratch3LooksBlocks {
         }
     }
 
+    goTargetLayer (args, util) {
+        let target;
+        const option = args.VISIBLE_OPTION;
+        if (option === '_stage_') target = this.runtime.getTargetForStage();
+        else target = this.runtime.getSpriteTargetByName(option);
+        if (!util.target.isStage && target) {
+            if (args.FORWARD_BACKWARD === 'infront') {
+                util.target.goBehindOther(target);
+                util.target.goForwardLayers(1);
+            } else {
+                util.target.goBehindOther(target);
+            }
+        }
+    }
+
     getSize (args, util) {
         return Math.round(util.target.size);
     }
@@ -886,6 +911,10 @@ class Scratch3LooksBlocks {
         }
         // Else return name
         return util.target.getCostumes()[util.target.currentCostume].name;
+    }
+
+    getCostumes (args, util) {
+        return JSON.stringify(util.target.sprite.costumes.map(costume => costume.name));
     }
 }
 

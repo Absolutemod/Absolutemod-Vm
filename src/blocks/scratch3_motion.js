@@ -30,6 +30,7 @@ class Scratch3MotionBlocks {
     getPrimitives () {
         return {
             motion_movesteps: this.moveSteps,
+            motion_movegrids: this.moveGrids,
             motion_movebacksteps: this.moveStepsBack,
             motion_moveupdownsteps: this.moveStepsUpDown,
             motion_gotoxy: this.goToXY,
@@ -41,6 +42,7 @@ class Scratch3MotionBlocks {
             motion_turnaround: this.turnAround,
             motion_pointinrandomdirection: this.pointInDirectionRandom,
             motion_pointtowardsxy: this.pointTowardsXY,
+            motion_pointtowards_xyfrom: this.pointTowards_xyfrom,
             motion_pointindirection: this.pointInDirection,
             motion_pointtowards: this.pointTowards,
             motion_glidesecstoxy: this.glide,
@@ -156,6 +158,10 @@ class Scratch3MotionBlocks {
         const steps = Cast.toNumber(args.STEPS);
         this._moveSteps(steps, util.target);
     }
+    moveGrids (args, util) {
+        const steps = Cast.toNumber(args.STEPS) * 40;
+        this._moveSteps(steps, util.target);
+    }
     moveStepsBack (args, util) {
         const steps = Cast.toNumber(args.STEPS);
         this._moveSteps(0 - steps, util.target);
@@ -269,6 +275,15 @@ class Scratch3MotionBlocks {
 
         const dx = targetX - util.target.x;
         const dy = targetY - util.target.y;
+        const direction = 90 - MathUtil.radToDeg(Math.atan2(dy, dx));
+        util.target.setDirection(direction);
+    }
+
+    pointTowards_xyfrom (args, util) {
+        const targetX = Cast.toNumber(args.X);
+        const targetY = Cast.toNumber(args.Y);
+        const dx = util.target.x - Cast.toNumber(args.FROMX);
+        const dy = util.target.y - Cast.toNumber(args.FROMY);
         const direction = 90 - MathUtil.radToDeg(Math.atan2(dy, dx));
         util.target.setDirection(direction);
     }
