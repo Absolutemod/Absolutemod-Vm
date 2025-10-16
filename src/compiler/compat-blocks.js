@@ -82,6 +82,13 @@ const statementBlocks = [
     'sound_play_at_seconds_until_done',
     'sound_pauseallsounds',
     'sensing_savedata',
+    'motion_pointtowards_xyfrom',
+    'motion_movegrids',
+    'control_exitLoop',
+    'control_continueLoop',
+    'comments_hat',
+    'comments_command',
+    'comments_loop'
 ];
 
 const outputBlocks = [
@@ -168,6 +175,9 @@ const outputBlocks = [
     'sound_getTimePosition',
     'sound_getSoundVolume',
     'sensing_getdata',
+    'looks_costumes',
+    'comments_reporter',
+    'comments_boolean'
 ];
 
 module.exports = {
